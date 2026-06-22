@@ -61,12 +61,12 @@ git push -u origin main
 7. Click **"Advanced"** → **"Add Environment Variable"**
    - Add all variables from your `.env` file:
      ```
-     GMAIL_USER=your-email@gmail.com
-     GMAIL_PASS=your-app-password
+     EMAIL_USER=your-email@gmail.com
+     EMAIL_PASSWORD=your-app-password
      GOOGLE_CLIENT_ID=your-client-id
      GOOGLE_CLIENT_SECRET=your-secret
      GOOGLE_REFRESH_TOKEN=your-refresh-token
-     REDIRECT_URI=https://developers.google.com/oauthplayground
+     GOOGLE_REDIRECT_URL=https://developers.google.com/oauthplayground
      ```
 
 8. Click **"Create Web Service"** - takes ~2-3 min ✅

@@ -5,6 +5,14 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+const emailUser = process.env.EMAIL_USER || process.env.GMAIL_USER;
+const emailPassword = process.env.EMAIL_PASSWORD || process.env.GMAIL_PASS;
+
+function ensureEmailConfigured() {
+    if (!emailUser || !emailPassword) {
+        throw new Error('Email is not configured. Set EMAIL_USER and EMAIL_PASSWORD, or GMAIL_USER and GMAIL_PASS.');
+    }
+}
 
 // Middleware
 app.use(cors({
@@ -38,22 +46,26 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
+        user: emailUser,
+        pass: emailPassword
     },
     connectionTimeout: 60000,
     greetingTimeout: 30000,
     socketTimeout: 60000
 });
-// verfiy transporter configuration
+// Verify transporter configuration
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("SMTP Error:", error);
-    } else {
-        console.log("SMTP Ready");
-    }
-});
+if (emailUser && emailPassword) {
+    transporter.verify((error) => {
+        if (error) {
+            console.log("SMTP Error:", error);
+        } else {
+            console.log("SMTP Ready");
+        }
+    });
+} else {
+    console.warn("SMTP not configured: missing email username or password");
+}
 
 // API endpoint to save date and send email + calendar invite
 app.post('/api/save-date', async (req, res) => {
@@ -143,6 +155,7 @@ app.post('/api/save-date', async (req, res) => {
         });
 
         // Step 2: Send confirmation email
+        ensureEmailConfigured();
         const timeLabels = {
             'morning': 'Morning ☀️ (8AM - 12PM)',
             'afternoon': 'Afternoon 🌤️ (12PM - 5PM)',
@@ -207,7 +220,7 @@ app.post('/api/save-date', async (req, res) => {
         `;
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: emailUser,
             to: email,
             subject: "🎉 It's a Date! Your Perfect Date Plan is Ready",
             html: emailContent
@@ -301,8 +314,10 @@ app.post('/api/send-date-notification', async (req, res) => {
         `;
 
         // Send notification email
+        ensureEmailConfigured();
+
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: emailUser,
             to: email,
             subject: "✅ Date Fixed! 📅 " + dateString,
             html: emailContent
@@ -330,9 +345,11 @@ app.get('/', (req, res) => {
 
 app.get('/test-email', async (req, res) => {
     try {
+        ensureEmailConfigured();
+
         const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER,
+            from: emailUser,
+            to: emailUser,
             subject: 'Test Email',
             text: 'Hello from Render'
         });

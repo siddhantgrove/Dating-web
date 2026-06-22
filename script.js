@@ -2,6 +2,9 @@
 let currentPage = 1;
 const totalPages = 6;
 let dateData = {};
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? ''
+    : 'https://dating-web-glkg.onrender.com';
 
 // Get elements
 const yesBtn = document.getElementById('yesBtn');
@@ -195,7 +198,7 @@ timeForm.addEventListener('submit', async (e) => {
         }
         
         // Send date notification
-        const response = await fetch('https://dating-web-glkg.onrender.com/api/send-date-notification', {
+        const response = await fetch(`${API_BASE_URL}/api/send-date-notification`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
