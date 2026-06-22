@@ -326,6 +326,27 @@ app.post('/api/send-date-notification', async (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+// sample test endpoint
+
+app.get('/test-email', async (req, res) => {
+    try {
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            subject: 'Test Email',
+            text: 'Hello from Render'
+        });
+
+        res.json(info);
+    } catch (err) {
+        console.error('TEST EMAIL ERROR:', err);
+        res.status(500).json(err);
+    }
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
