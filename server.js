@@ -8,7 +8,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'https://dating-web-pink.vercel.app'
+  origin: [
+    'https://dating-web-pink.vercel.app',
+    'http://localhost:3001',
+    'http://localhost:3002'
+  ]
 }));
 app.use(express.json());
 app.use(express.static('.'));
