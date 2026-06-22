@@ -7,6 +7,9 @@ require('dotenv').config();
 const app = express();
 const emailUser = process.env.EMAIL_USER || process.env.GMAIL_USER;
 const emailPassword = process.env.EMAIL_PASSWORD || process.env.GMAIL_PASS;
+const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+const smtpPort = Number(process.env.SMTP_PORT || 587);
+const smtpSecure = String(process.env.SMTP_SECURE || '').toLowerCase() === 'true' || smtpPort === 465;
 
 function ensureEmailConfigured() {
     if (!emailUser || !emailPassword) {
@@ -42,9 +45,10 @@ oauth2Client.setCredentials({
 
 // Email transporter (Gmail)
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpSecure,
+    requireTLS: !smtpSecure,
     auth: {
         user: emailUser,
         pass: emailPassword
@@ -58,9 +62,16 @@ const transporter = nodemailer.createTransport({
 if (emailUser && emailPassword) {
     transporter.verify((error) => {
         if (error) {
-            console.log("SMTP Error:", error);
+            console.log("SMTP Error:", {
+                code: error.code,
+                command: error.command,
+                message: error.message,
+                host: smtpHost,
+                port: smtpPort,
+                secure: smtpSecure
+            });
         } else {
-            console.log("SMTP Ready");
+            console.log(`SMTP Ready: ${smtpHost}:${smtpPort}`);
         }
     });
 } else {
@@ -368,6 +379,6 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log('Email service: Gmail configured');
+    console.log(`Email service: ${smtpHost}:${smtpPort}`);
     console.log('Google Calendar API: Connected');
 });

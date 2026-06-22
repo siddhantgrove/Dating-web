@@ -63,6 +63,9 @@ git push -u origin main
      ```
      EMAIL_USER=your-email@gmail.com
      EMAIL_PASSWORD=your-app-password
+     SMTP_HOST=smtp.gmail.com
+     SMTP_PORT=587
+     SMTP_SECURE=false
      GOOGLE_CLIENT_ID=your-client-id
      GOOGLE_CLIENT_SECRET=your-secret
      GOOGLE_REFRESH_TOKEN=your-refresh-token
