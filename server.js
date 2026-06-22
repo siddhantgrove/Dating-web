@@ -7,7 +7,9 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://dating-web-pink.vercel.app'
+}));
 app.use(express.json());
 app.use(express.static('.'));
 
@@ -28,10 +30,24 @@ oauth2Client.setCredentials({
 
 // Email transporter (Gmail)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 30000,
+    socketTimeout: 60000
+});
+// verfiy transporter configuration
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("SMTP Error:", error);
+    } else {
+        console.log("SMTP Ready");
     }
 });
 
