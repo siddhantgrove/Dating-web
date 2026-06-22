@@ -195,7 +195,7 @@ timeForm.addEventListener('submit', async (e) => {
         }
         
         // Send date notification
-        const response = await fetch('/api/send-date-notification', {
+        const response = await fetch('https://dating-web-glkg.onrender.com/api/send-date-notification', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
