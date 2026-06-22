@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Go on a Date? 💕</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Page 1: Yes/No Buttons -->
+    <div id="page1" class="page active">
+        <div class="container">
+            <div class="content-center">
+                <h1 class="emoji-text">💕</h1>
+                <h2>Will you go on a date with me?</h2>
+                <p class="subtitle">Click Yes (don't click No because you can't 😉)</p>
+                
+                <div class="button-container">
+                    <button id="yesBtn" class="btn btn-yes">Yes Obviously ❤️</button>
+                    <button id="noBtn" class="btn btn-no">No 😢</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Congratulations -->
+    <div id="page2" class="page">
+        <div class="container">
+            <div class="content-center">
+                <h1 class="confetti-emoji">🎉</h1>
+                <h2>Congrats! You said YES I know ! 🥳</h2>
+                <p class="subtitle">This is going to be amazing hahah!</p>
+                
+                <div class="fireworks-container" id="fireworks"></div>
+                
+                <button id="okayBtn" class="btn btn-yes">Okay, let's go Fast! ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: When are you free? -->
+    <div id="page3" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2>When are you free? ⏰</h2>
+                <p class="subtitle">Pick a date on the calendar</p>
+                
+                <form id="timeForm">
+                    <div class="calendar-section">
+                        <label for="dateInput" class="calendar-label">📅 Select your date:</label>
+                        <input type="date" id="dateInput" name="date" required class="date-input">
+                        <p id="selectedDateDisplay" class="selected-date-display"></p>
+                    </div>
+                    
+                    <div class="time-options">
+                        <p class="time-label">🕐 What time works best?</p>
+                        <label class="option-label">
+                            <input type="radio" name="time" value="morning" required>
+                            <span class="option-text">Morning ☀️ (8AM - 12PM)</span>
+                        </label>
+                        
+                        <label class="option-label">
+                            <input type="radio" name="time" value="afternoon">
+                            <span class="option-text">Afternoon 🌤️ (12PM - 5PM)</span>
+                        </label>
+                        
+                        <label class="option-label">
+                            <input type="radio" name="time" value="evening">
+                            <span class="option-text">Evening 🌅 (5PM - 8PM)</span>
+                        </label>
+                        
+                        <label class="option-label">
+                            <input type="radio" name="time" value="night">
+                            <span class="option-text">Night 🌙 (8PM onwards)</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-yes">Next ➡️</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: What are we feeling? (Food) -->
+    <div id="page4" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2>What are we feeling? 😋</h2>
+                <p class="subtitle">Pick your favorite foods (you can choose multiple thoo and also tell me in msg!)</p>
+                
+                <form id="foodForm">
+                    <div class="food-grid">
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="pizza">
+                            <div class="food-emoji">🍕</div>
+                            <div class="food-name">Pizza</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="burger">
+                            <div class="food-emoji">🍔</div>
+                            <div class="food-name">Burger</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="coffee">
+                            <div class="food-emoji">☕</div>
+                            <div class="food-name">Coffee</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="tea">
+                            <div class="food-emoji">🍵</div>
+                            <div class="food-name">Tea</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="momos">
+                            <div class="food-emoji">🥟</div>
+                            <div class="food-name">Momos</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="pasta">
+                            <div class="food-emoji">🍝</div>
+                            <div class="food-name">Pasta</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="icecream">
+                            <div class="food-emoji">🍦</div>
+                            <div class="food-name">Ice Cream</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="food-card">
+                            <input type="checkbox" name="food" value="sushi">
+                            <div class="food-emoji">🍣</div>
+                            <div class="food-name">Sushi</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-yes">Next ➡️</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: Adventure Section -->
+    <div id="page5" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2>Want some adventure? 🎢</h2>
+                <p class="subtitle">Pick activities you'd love to do (choose as many as you like!)</p>
+                
+                <form id="adventureForm">
+                    <div class="adventure-grid">
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="amusement_park">
+                            <div class="adventure-emoji">🎡</div>
+                            <div class="adventure-name">Amusement Park</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="water_park">
+                            <div class="adventure-emoji">🌊</div>
+                            <div class="adventure-name">Water Park</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="hiking">
+                            <div class="adventure-emoji">⛰️</div>
+                            <div class="adventure-name">Hiking</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="comedy_show">
+                            <div class="adventure-emoji">🎭</div>
+                            <div class="adventure-name">Comedy Show</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="movie">
+                            <div class="adventure-emoji">🎬</div>
+                            <div class="adventure-name">Movie Night</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="picnic">
+                            <div class="adventure-emoji">🧺</div>
+                            <div class="adventure-name">Picnic</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="car_ride">
+                            <div class="adventure-emoji">🚗</div>
+                            <div class="adventure-name">Car Ride</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                        
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="travelling">
+                            <div class="adventure-emoji">✈️</div>
+                            <div class="adventure-name">Travelling</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+
+                        <label class="adventure-card">
+                            <input type="checkbox" name="adventure" value="gaming_zone">
+                            <div class="adventure-emoji">🎮</div>
+                            <div class="adventure-name">Gaming Zone</div>
+                            <div class="checkmark">✓</div>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-yes">See Our Date Plan! 💑</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 6: Summary -->
+    <div id="page6" class="page">
+        <div class="container">
+            <div class="summary-container">
+                <div class="confetti-header">
+                    <p class="header-emoji">🎉💑🎉</p>
+                    <h2>Congrats It's a Date! 💕</h2>
+                    <p class="header-subtitle">Get ready for something amazing! ✨</p>
+                </div>
+                
+                <div class="details-wrapper">
+                    <div class="detail-item">
+                        <div class="detail-icon">📅</div>
+                        <div class="detail-content">
+                            <p class="detail-label">When?</p>
+                            <p id="summaryTime" class="detail-value">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">😋</div>
+                        <div class="detail-content">
+                            <p class="detail-label">What to eat?</p>
+                            <p id="summaryFood" class="detail-value">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">🎢</div>
+                        <div class="detail-content">
+                            <p class="detail-label">Adventures?</p>
+                            <p id="summaryAdventure" class="detail-value">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cute-message">
+                    <div class="hearts-animation">💕 🌟 💕</div>
+                    <p class="message-text">This is going to be the most magical day ever!</p>
+                    <p class="message-subtext">Can't wait to see you! 😊</p>
+                </div>
+                
+                <button id="startOverBtn" class="btn btn-yes btn-large">Start Over 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
