@@ -18,6 +18,8 @@ const fireworksContainer = document.getElementById('fireworks');
 const dateInput = document.getElementById('dateInput');
 const selectedDateDisplay = document.getElementById('selectedDateDisplay');
 const copyEmailBtn = document.getElementById('copyEmailBtn');
+const copyAdminEmailBtn = document.getElementById('copyAdminEmailBtn');
+const adminEmailText = document.getElementById('adminEmailText');
 
 // Set minimum date to today
 const today = new Date();
@@ -437,6 +439,34 @@ async function copyEmailToClipboard() {
 }
 
 copyEmailBtn.addEventListener('click', copyEmailToClipboard);
+
+async function copyAdminEmailToClipboard() {
+    const adminEmail = adminEmailText.textContent.trim();
+
+    try {
+        await navigator.clipboard.writeText(adminEmail);
+        const originalText = copyAdminEmailBtn.textContent;
+        copyAdminEmailBtn.textContent = 'Copied';
+        copyAdminEmailBtn.disabled = true;
+
+        setTimeout(() => {
+            copyAdminEmailBtn.textContent = originalText;
+            copyAdminEmailBtn.disabled = false;
+        }, 1200);
+    } catch (error) {
+        const textArea = document.createElement('textarea');
+        textArea.value = adminEmail;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Email copied!');
+    }
+}
+
+copyAdminEmailBtn.addEventListener('click', copyAdminEmailToClipboard);
 
 // Start Over
 startOverBtn.addEventListener('click', () => {
