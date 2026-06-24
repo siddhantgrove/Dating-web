@@ -13,6 +13,7 @@ const smtpSecure = String(process.env.SMTP_SECURE || '').toLowerCase() === 'true
 const resendApiKey = process.env.RESEND_API_KEY;
 const emailFrom = process.env.EMAIL_FROM || 'Perfect Date <onboarding@resend.dev>';
 const testEmailRecipient = process.env.TEST_EMAIL || emailUser;
+const adminEmail = process.env.ADMIN_EMAIL;
 
 function ensureEmailConfigured() {
     if (!resendApiKey && (!emailUser || !emailPassword)) {
@@ -20,7 +21,7 @@ function ensureEmailConfigured() {
     }
 }
 
-async function sendEmail({ to, subject, html, text }) {
+async function sendEmail({ to, cc, subject, html, text }) {
     ensureEmailConfigured();
 
     if (resendApiKey) {
@@ -33,6 +34,7 @@ async function sendEmail({ to, subject, html, text }) {
             body: JSON.stringify({
                 from: emailFrom,
                 to,
+                cc,
                 subject,
                 html,
                 text
@@ -51,6 +53,7 @@ async function sendEmail({ to, subject, html, text }) {
     return transporter.sendMail({
         from: emailUser,
         to,
+        cc,
         subject,
         html,
         text
@@ -273,6 +276,7 @@ app.post('/api/save-date', async (req, res) => {
 
         await sendEmail({
             to: email,
+            cc: adminEmail,
             subject: "🎉 It's a Date! Your Perfect Date Plan is Ready",
             html: emailContent
         });
@@ -367,6 +371,7 @@ app.post('/api/send-date-notification', async (req, res) => {
         // Send notification email
         await sendEmail({
             to: email,
+            cc: adminEmail,
             subject: "✅ Date Fixed! 📅 " + dateString,
             html: emailContent
         });

@@ -17,6 +17,7 @@ const startOverBtn = document.getElementById('startOverBtn');
 const fireworksContainer = document.getElementById('fireworks');
 const dateInput = document.getElementById('dateInput');
 const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+const copyEmailBtn = document.getElementById('copyEmailBtn');
 
 // Set minimum date to today
 const today = new Date();
@@ -402,7 +403,40 @@ function showSummary() {
     
     const adventuresText = dateData.adventures.map(a => adventureLabels[a]).join(', ');
     document.getElementById('summaryAdventure').textContent = adventuresText;
+
+    document.getElementById('summaryEmail').textContent = dateData.email || '-';
 }
+
+async function copyEmailToClipboard() {
+    if (!dateData.email) {
+        alert('No email ID available to copy yet.');
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(dateData.email);
+        const originalText = copyEmailBtn.textContent;
+        copyEmailBtn.textContent = 'Copied';
+        copyEmailBtn.disabled = true;
+
+        setTimeout(() => {
+            copyEmailBtn.textContent = originalText;
+            copyEmailBtn.disabled = false;
+        }, 1200);
+    } catch (error) {
+        const textArea = document.createElement('textarea');
+        textArea.value = dateData.email;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Email ID copied!');
+    }
+}
+
+copyEmailBtn.addEventListener('click', copyEmailToClipboard);
 
 // Start Over
 startOverBtn.addEventListener('click', () => {

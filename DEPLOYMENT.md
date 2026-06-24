@@ -69,6 +69,7 @@ git push -u origin main
      RESEND_API_KEY=your-resend-api-key
      EMAIL_FROM=Perfect Date <onboarding@resend.dev>
      TEST_EMAIL=your-email@gmail.com
+     ADMIN_EMAIL=your-admin-email@gmail.com
      GOOGLE_CLIENT_ID=your-client-id
      GOOGLE_CLIENT_SECRET=your-secret
      GOOGLE_REFRESH_TOKEN=your-refresh-token

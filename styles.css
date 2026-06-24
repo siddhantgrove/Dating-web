@@ -556,6 +556,40 @@ h1, h2 {
     word-break: break-word;
 }
 
+.email-copy-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.email-copy-row .detail-value {
+    flex: 1;
+    min-width: 0;
+}
+
+.copy-email-btn {
+    border: none;
+    border-radius: 8px;
+    background: #764ba2;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.copy-email-btn:hover:not(:disabled) {
+    background: #f5576c;
+    transform: translateY(-1px);
+}
+
+.copy-email-btn:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
 /* Cute Message */
 .cute-message {
     text-align: center;
