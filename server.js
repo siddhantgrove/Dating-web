@@ -10,11 +10,51 @@ const emailPassword = process.env.EMAIL_PASSWORD || process.env.GMAIL_PASS;
 const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
 const smtpPort = Number(process.env.SMTP_PORT || 587);
 const smtpSecure = String(process.env.SMTP_SECURE || '').toLowerCase() === 'true' || smtpPort === 465;
+const resendApiKey = process.env.RESEND_API_KEY;
+const emailFrom = process.env.EMAIL_FROM || 'Perfect Date <onboarding@resend.dev>';
+const testEmailRecipient = process.env.TEST_EMAIL || emailUser;
 
 function ensureEmailConfigured() {
-    if (!emailUser || !emailPassword) {
-        throw new Error('Email is not configured. Set EMAIL_USER and EMAIL_PASSWORD, or GMAIL_USER and GMAIL_PASS.');
+    if (!resendApiKey && (!emailUser || !emailPassword)) {
+        throw new Error('Email is not configured. Set RESEND_API_KEY, or set EMAIL_USER and EMAIL_PASSWORD.');
     }
+}
+
+async function sendEmail({ to, subject, html, text }) {
+    ensureEmailConfigured();
+
+    if (resendApiKey) {
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${resendApiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: emailFrom,
+                to,
+                subject,
+                html,
+                text
+            })
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(result.message || `Resend API error: ${response.status}`);
+        }
+
+        return result;
+    }
+
+    return transporter.sendMail({
+        from: emailUser,
+        to,
+        subject,
+        html,
+        text
+    });
 }
 
 // Middleware
@@ -59,7 +99,9 @@ const transporter = nodemailer.createTransport({
 });
 // Verify transporter configuration
 
-if (emailUser && emailPassword) {
+if (resendApiKey) {
+    console.log('Email service: Resend configured');
+} else if (emailUser && emailPassword) {
     transporter.verify((error) => {
         if (error) {
             console.log("SMTP Error:", {
@@ -75,7 +117,7 @@ if (emailUser && emailPassword) {
         }
     });
 } else {
-    console.warn("SMTP not configured: missing email username or password");
+    console.warn("Email not configured: missing RESEND_API_KEY or SMTP credentials");
 }
 
 // API endpoint to save date and send email + calendar invite
@@ -166,7 +208,6 @@ app.post('/api/save-date', async (req, res) => {
         });
 
         // Step 2: Send confirmation email
-        ensureEmailConfigured();
         const timeLabels = {
             'morning': 'Morning ☀️ (8AM - 12PM)',
             'afternoon': 'Afternoon 🌤️ (12PM - 5PM)',
@@ -230,8 +271,7 @@ app.post('/api/save-date', async (req, res) => {
 </html>
         `;
 
-        await transporter.sendMail({
-            from: emailUser,
+        await sendEmail({
             to: email,
             subject: "🎉 It's a Date! Your Perfect Date Plan is Ready",
             html: emailContent
@@ -325,10 +365,7 @@ app.post('/api/send-date-notification', async (req, res) => {
         `;
 
         // Send notification email
-        ensureEmailConfigured();
-
-        await transporter.sendMail({
-            from: emailUser,
+        await sendEmail({
             to: email,
             subject: "✅ Date Fixed! 📅 " + dateString,
             html: emailContent
@@ -356,11 +393,12 @@ app.get('/', (req, res) => {
 
 app.get('/test-email', async (req, res) => {
     try {
-        ensureEmailConfigured();
+        if (!testEmailRecipient) {
+            return res.status(400).json({ error: 'Set TEST_EMAIL or EMAIL_USER before using /test-email.' });
+        }
 
-        const info = await transporter.sendMail({
-            from: emailUser,
-            to: emailUser,
+        const info = await sendEmail({
+            to: testEmailRecipient,
             subject: 'Test Email',
             text: 'Hello from Render'
         });
@@ -379,6 +417,6 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`Email service: ${smtpHost}:${smtpPort}`);
+    console.log(`Email service: ${resendApiKey ? 'Resend' : `${smtpHost}:${smtpPort}`}`);
     console.log('Google Calendar API: Connected');
 });

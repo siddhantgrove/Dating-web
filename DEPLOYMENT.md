@@ -66,6 +66,9 @@ git push -u origin main
      SMTP_HOST=smtp.gmail.com
      SMTP_PORT=587
      SMTP_SECURE=false
+     RESEND_API_KEY=your-resend-api-key
+     EMAIL_FROM=Perfect Date <onboarding@resend.dev>
+     TEST_EMAIL=your-email@gmail.com
      GOOGLE_CLIENT_ID=your-client-id
      GOOGLE_CLIENT_SECRET=your-secret
      GOOGLE_REFRESH_TOKEN=your-refresh-token
